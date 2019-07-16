@@ -2,8 +2,4 @@ BHweather [![Build Status](https://travis-ci.org/OpenVisionE2/BHweather.svg?bran
 ========
 Coded by Meo (Black Hole Team)
 
-Modified by RAED for Open Vision 
-
-.Transparent Background
-
--Support HD and Full HD skins
+Modified by RAED for Open Vision
