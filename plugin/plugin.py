@@ -21,7 +21,7 @@ from Tools.LoadPixmap import LoadPixmap
 from urllib import quote
 from urllib2 import Request, urlopen, URLError, HTTPError
 from xml.etree.cElementTree import fromstring
-from xml.dom import minidom, Node
+from xml.dom import minidom
 from enigma import eTimer, getDesktop
 import codecs
 
