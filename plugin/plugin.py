@@ -19,20 +19,18 @@ from Components.Pixmap import Pixmap
 from Components.config import config
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
 from Tools.LoadPixmap import LoadPixmap
-from urllib import quote
-from urllib2 import Request, urlopen, URLError, HTTPError
 from xml.etree.cElementTree import fromstring
 from xml.dom import minidom
 from enigma import eTimer, getDesktop
 import codecs
 
-def logdata(label_name = '', data = None):
-        data=str(data)
-        import urllib
-        data = urllib.unquote_plus(data)   
-        fp = open('/tmp/tt_log', 'a')
-        fp.write("\n"+str(label_name) + ': ' + data)
-        fp.close()
+# python3
+from .compat import PY3
+from .compat import compat_quote
+from .compat import compat_urlopen
+from .compat import compat_Request
+from .compat import compat_URLError
+from .logging import printD, printE, delLog
 
 def removeunicode(data):
     try:
@@ -118,10 +116,7 @@ class BhMeteoMain(Screen):
          'back': self.close,
          'ok': self.close})
         self.activityTimer = eTimer()
-        try: #edit By RAED To DreamOS
-             self.activityTimer.timeout.get().append(self.startConnection)
-        except:
-             self.activityTimer_conn = self.activityTimer.timeout.connect(self.startConnection)
+        self.activityTimer.timeout.get().append(self.startConnection)
         self.onShow.append(self.startShow)
         self.onClose.append(self.delTimer)
 
@@ -135,7 +130,7 @@ class BhMeteoMain(Screen):
     def updateInfo(self):
         myurl = self.get_Url()
         req = Request(myurl)
-        logdata('myurl2xxx',myurl)
+        printD('myurl',myurl)
         try:
             handler = urlopen(req)
         except HTTPError as e:
@@ -144,12 +139,13 @@ class BhMeteoMain(Screen):
             maintext = 'Error: Page not available !'
         else:
             page = handler.read()
-            logdata("pagexx",page)
+            printD("pagexx",page)
             handler.close()
-            if page.find('forecast') > 1:
-                page = page.replace('\n', '')
-                page = page.replace('\xc2\x86', '').replace('\xc2\x87', '').decode('utf-8', 'ignore').encode('utf-8') or ''
+            if page.find(b'forecast') > 1:
                 page = codecs.decode(page, 'UTF-8')
+                page = page.replace('\n', '')
+                page = page.replace('\xc2\x86', '').replace('\xc2\x87', '') or ''
+                printD("page",page)
                 dom = minidom.parseString(page)
                 Week = []
                 for curr in dom.getElementsByTagName('forecast'):
@@ -165,7 +161,6 @@ class BhMeteoMain(Screen):
                      'Icon': Icon,
                      'Cond': Cond,
                      'Regen': Regen})
-
                 Today = {}
                 curr = dom.getElementsByTagName('weather')
                 if len(curr) != 0:
@@ -173,9 +168,13 @@ class BhMeteoMain(Screen):
                     city = getcity()
                     logdata("city",city)
                     if city:
-                       Today['Locname'] = getcity() #removeunicode(curr[0].getAttribute('weatherlocationname'))
+                        Today['Locname'] = getcity() #removeunicode(curr[0].getAttribute('weatherlocationname'))
                     else:
-                       Today['Locname'] = removeunicode(curr[0].getAttribute('weatherlocationname'))
+                        Today['Locname'] = removeunicode(curr[0].getAttribute('weatherlocationname'))
+                    try:
+                        Today['Locname']=Today['Locname'].decode("utf-8")
+                    except:
+                        pass
                     Today['provider'] = curr[0].getAttribute('provider')
                     Today['Latitude'] = curr[0].getAttribute('lat')
                     Today['Longitude'] = curr[0].getAttribute('long')
@@ -309,8 +308,6 @@ class BhMeteoMain(Screen):
             line = f.readline()
             url = line.strip()
             f.close()
-
-        
         if url.find('src=outlook') == -1:
             url = url + '&src=outlook'
         return url
@@ -330,9 +327,11 @@ class BhMeteoMain(Screen):
         #self.session.openWithCallback(self.goSelect, InputBox, title=msg, windowTitle=_('Change city'), text='Roma')
 
     def goSelect(self, city):
-        if city is not None:
-            self.session.openWithCallback(self.updateInfo, BhMeteoSelectCity, city)
-
+        try:
+                if city is not None:
+                        self.session.openWithCallback(self.updateInfo, BhMeteoSelectCity, city)
+        except:
+                printE()
 
 class BhMeteoSelectCity(Screen):
     skinwidth = getDesktop(0).size().width()
@@ -361,11 +360,10 @@ class BhMeteoSelectCity(Screen):
             file = urlopen(url)
         except:
             return
-
         html = file.read()
         logdata("html",html)    
         file.close()
-        if html.find('Unable to configure weather') != -1:
+        if html.find(b'Unable to configure weather') != -1:
             self.lang = 'en-US'
             url = 'http://weather.service.msn.com/find.aspx?outputview=search&weasearchstr=%s&culture=%s&src=outlook' % (quote(self.city), self.lang)
             file = urlopen(url)
@@ -381,7 +379,10 @@ class BhMeteoSelectCity(Screen):
             if childs.tag == 'weather':
                 searchresult = childs.attrib.get('weatherlocationname').encode('utf-8', 'ignore')
                 woeid = childs.attrib.get('weatherlocationcode').encode('utf-8', 'ignore')
-                res = (searchresult, woeid)
+                if PY3:
+                        res = (searchresult.decode("utf-8"), woeid)
+                else:
+                        res = (searchresult, woeid)
                 self.flist.append(res)
 
         if len(self.flist) > 0:
@@ -392,7 +393,7 @@ class BhMeteoSelectCity(Screen):
         mysel = self['list'].getCurrent()
         if mysel:
             city = mysel[0]
-            pin = mysel[1]
+            pin = mysel[1].decode("utf-8")
             url = 'http://weather.service.msn.com/data.aspx?weadegreetype=C&culture=%s&wealocations=%s\n' % (self.lang, pin)
             cfgfile = '/etc/bhwheater2.cfg'
             out = open(cfgfile, 'w')
@@ -403,10 +404,8 @@ class BhMeteoSelectCity(Screen):
             out.close()
             self.close()
 
-
 def main(session, **kwargs):
     session.open(BhMeteoMain)
-
 
 def menu(menuid, **kwargs):
     if menuid == 'mainmenu':
@@ -415,7 +414,6 @@ def menu(menuid, **kwargs):
           'BlackHoleWeather',
           46)]
     return []
-
 
 def Plugins(path, **kwargs):
     global pluginpath
