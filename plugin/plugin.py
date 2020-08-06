@@ -173,7 +173,7 @@ class BhMeteoMain(Screen):
                         Today['Locname'] = removeunicode(curr[0].getAttribute('weatherlocationname'))
                     try:
                         Today['Locname']=Today['Locname'].decode("utf-8")
-                    else:
+                    except:
                         pass
                     Today['provider'] = curr[0].getAttribute('provider')
                     Today['Latitude'] = curr[0].getAttribute('lat')
