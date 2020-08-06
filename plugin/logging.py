@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#Codes for mfaraj57
 
 import os
 log_file='/tmp/bhweather.log'  
