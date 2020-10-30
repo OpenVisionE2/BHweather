@@ -48,7 +48,7 @@ def getcity():
       try:  
             for line in open('/etc/bhwheater2.cfg').readlines():
                 line=line.strip()
-                logdata("line",line)
+                logdata("line", line)
                 if line.startswith("city"):
                         city=line.split("=")[1]
                         return city        
@@ -130,7 +130,7 @@ class BhMeteoMain(Screen):
     def updateInfo(self):
         myurl = self.get_Url()
         req = Request(myurl)
-        printD('myurl',myurl)
+        printD('myurl', myurl)
         try:
             handler = urlopen(req)
         except HTTPError as e:
@@ -139,13 +139,13 @@ class BhMeteoMain(Screen):
             maintext = 'Error: Page not available !'
         else:
             page = handler.read()
-            printD("pagexx",page)
+            printD("pagexx", page)
             handler.close()
             if page.find(b'forecast') > 1:
                 page = codecs.decode(page, 'UTF-8')
                 page = page.replace('\n', '')
                 page = page.replace('\xc2\x86', '').replace('\xc2\x87', '') or ''
-                printD("page",page)
+                printD("page", page)
                 dom = minidom.parseString(page)
                 Week = []
                 for curr in dom.getElementsByTagName('forecast'):
@@ -166,7 +166,7 @@ class BhMeteoMain(Screen):
                 if len(curr) != 0:
                     logdata(curr[0].getAttribute('weatherlocationname'))
                     city = getcity()
-                    logdata("city",city)
+                    logdata("city", city)
                     if city:
                         Today['Locname'] = getcity() #removeunicode(curr[0].getAttribute('weatherlocationname'))
                     else:
@@ -355,20 +355,20 @@ class BhMeteoSelectCity(Screen):
         if self.lang == 'en-EN':
             self.lang = 'en-US'
         url = 'http://weather.service.msn.com/find.aspx?outputview=search&weasearchstr=%s&culture=%s&src=outlook' % (quote(self.city), self.lang)
-        logdata("url",url)
+        logdata("url", url)
         try:
             file = urlopen(url)
         except:
             return
         html = file.read()
-        logdata("html",html)    
+        logdata("html", html)    
         file.close()
         if html.find(b'Unable to configure weather') != -1:
             self.lang = 'en-US'
             url = 'http://weather.service.msn.com/find.aspx?outputview=search&weasearchstr=%s&culture=%s&src=outlook' % (quote(self.city), self.lang)
             file = urlopen(url)
             html = file.read()
-            logdata("html2",html) 
+            logdata("html2", html) 
             file.close()
         root = fromstring(html)
         searchlocation = ''

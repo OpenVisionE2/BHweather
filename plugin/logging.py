@@ -5,13 +5,13 @@ import os
 log_file='/tmp/bhweather.log'  
 
 def printE(msg=''):
-    import traceback,sys
+    import traceback, sys
     printD("===============================================")
     printD("                   EXCEPTION                   ")
     printD("===============================================")
     msg = msg + ': \n%s' % traceback.format_exc()
     traceback.print_exc(file=sys.stdout)
-    printD("Error",msg)
+    printD("Error", msg)
     printD("===============================================")
   
 def getcaller_name():
