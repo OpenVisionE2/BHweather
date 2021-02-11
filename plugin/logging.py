@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #Codes for mfaraj57
 
+from __future__ import print_function
 import os
 log_file='/tmp/bhweather.log'  
 
