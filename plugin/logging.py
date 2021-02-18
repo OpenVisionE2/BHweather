@@ -6,7 +6,8 @@ import os
 log_file='/tmp/bhweather.log'  
 
 def printE(msg=''):
-    import traceback, sys
+    import traceback
+    import sys
     printD("===============================================")
     printD("                   EXCEPTION                   ")
     printD("===============================================")
