@@ -323,7 +323,7 @@ class BhMeteoMain(Screen):
     def key_red(self):
         msg = _('Enter the city name:')
         from Screens.VirtualKeyBoard import VirtualKeyBoard
-        self.session.openWithCallback(self.goSelect, VirtualKeyBoard, title = (_("Change city")), text = 'manama')
+        self.session.openWithCallback(self.goSelect, VirtualKeyBoard, title=(_("Change city")), text='manama')
         #self.session.openWithCallback(self.goSelect, InputBox, title=msg, windowTitle=_('Change city'), text='Roma')
 
     def goSelect(self, city):
