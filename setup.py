@@ -4,7 +4,7 @@ from distutils.core import setup
 import setup_translate
 
 pkg = 'Extensions.BhWeather'
-setup (name='enigma2-plugin-extensions-bhweather',
+setup(name='enigma2-plugin-extensions-bhweather',
        version='0.6',
        description='Black Hole weather plugin.',
        packages=[pkg],

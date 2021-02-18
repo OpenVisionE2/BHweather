@@ -28,7 +28,7 @@ def getcaller_name():
     except:
         return ''
 
-def printD(label='', Ddata='' ):
+def printD(label='', Ddata=''):
         Ddata=str(Ddata)
         label=str(label)
         import traceback
