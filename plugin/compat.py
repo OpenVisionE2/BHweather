@@ -38,6 +38,7 @@ if version_info >= (2, 7, 9):
 	except:
 		sslContext = None
 
+
 def _parse_qsl(qs):
 	qs, _coerce_result = qs, compat_str
 	pairs = [s2 for s1 in qs.split('&') for s2 in s1.split(';')]
@@ -59,6 +60,7 @@ def _parse_qsl(qs):
 			r.append((name, value))
 	return r
 
+
 def compat_parse_qs(qs):
 	parsed_result = {}
 	pairs = _parse_qsl(qs)
@@ -69,11 +71,13 @@ def compat_parse_qs(qs):
 			parsed_result[name] = [value]
 	return parsed_result
 
+
 def compat_ssl_urlopen(url):
 	if sslContext:
 		return compat_urlopen(url, context=sslContext)
 	else:
 		return compat_urlopen(url)
+
 
 def compat_urllib_parse_unquote(string):
 	if '%' not in string:

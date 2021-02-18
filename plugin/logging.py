@@ -5,6 +5,7 @@ from __future__ import print_function
 import os
 log_file = '/tmp/bhweather.log'  
 
+
 def printE(msg=''):
     import traceback
     import sys
@@ -16,6 +17,7 @@ def printE(msg=''):
     printD("Error", msg)
     printD("===============================================")
   
+
 def getcaller_name():
     try:
         import inspect
@@ -27,6 +29,7 @@ def getcaller_name():
         return calling_module
     except:
         return ''
+
 
 def printD(label='', Ddata=''):
         Ddata = str(Ddata)
@@ -51,6 +54,7 @@ def printD(label='', Ddata=''):
                 print("======================EXC printD======================")
                 print("logII: %s" % traceback.format_exc())
                 print("========================================================")
+
 
 def delLog():
     if os.path.exists(log_file):

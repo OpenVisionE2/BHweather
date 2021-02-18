@@ -32,6 +32,7 @@ from .compat import compat_Request
 from .compat import compat_URLError
 from .logging import printD, printE, delLog
 
+
 def removeunicode(data):
     try:
         try:
@@ -43,6 +44,7 @@ def removeunicode(data):
     except:
         pass
     return data
+
 
 def getcity():
       try:  
@@ -56,6 +58,7 @@ def getcity():
             pass
       return None
  
+
 class BhMeteoMain(Screen):
     skinwidth = getDesktop(0).size().width()
     if skinwidth == 1280:
@@ -333,6 +336,7 @@ class BhMeteoMain(Screen):
         except:
                 printE()
 
+
 class BhMeteoSelectCity(Screen):
     skinwidth = getDesktop(0).size().width()
     if skinwidth == 1280:
@@ -404,8 +408,10 @@ class BhMeteoSelectCity(Screen):
             out.close()
             self.close()
 
+
 def main(session, **kwargs):
     session.open(BhMeteoMain)
+
 
 def menu(menuid, **kwargs):
     if menuid == 'mainmenu':
@@ -414,6 +420,7 @@ def menu(menuid, **kwargs):
           'BlackHoleWeather',
           46)]
     return []
+
 
 def Plugins(path, **kwargs):
     global pluginpath
