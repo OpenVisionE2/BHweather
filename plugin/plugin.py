@@ -47,17 +47,17 @@ def removeunicode(data):
 
 
 def getcity():
-      try:  
+      try:
             for line in open('/etc/bhwheater2.cfg').readlines():
                 line = line.strip()
                 logdata("line", line)
                 if line.startswith("city"):
                         city = line.split("=")[1]
-                        return city        
+                        return city
       except:
             pass
       return None
- 
+
 
 class BhMeteoMain(Screen):
     skinwidth = getDesktop(0).size().width()
@@ -365,14 +365,14 @@ class BhMeteoSelectCity(Screen):
         except:
             return
         html = file.read()
-        logdata("html", html)    
+        logdata("html", html)
         file.close()
         if html.find(b'Unable to configure weather') != -1:
             self.lang = 'en-US'
             url = 'http://weather.service.msn.com/find.aspx?outputview=search&weasearchstr=%s&culture=%s&src=outlook' % (quote(self.city), self.lang)
             file = urlopen(url)
             html = file.read()
-            logdata("html2", html) 
+            logdata("html2", html)
             file.close()
         root = fromstring(html)
         searchlocation = ''
