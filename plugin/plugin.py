@@ -47,10 +47,10 @@ def removeunicode(data):
 def getcity():
       try:  
             for line in open('/etc/bhwheater2.cfg').readlines():
-                line=line.strip()
+                line = line.strip()
                 logdata("line", line)
                 if line.startswith("city"):
-                        city=line.split("=")[1]
+                        city = line.split("=")[1]
                         return city        
       except:
             pass
@@ -172,7 +172,7 @@ class BhMeteoMain(Screen):
                     else:
                         Today['Locname'] = removeunicode(curr[0].getAttribute('weatherlocationname'))
                     try:
-                        Today['Locname']=Today['Locname'].decode("utf-8")
+                        Today['Locname'] = Today['Locname'].decode("utf-8")
                     except:
                         pass
                     Today['provider'] = curr[0].getAttribute('provider')

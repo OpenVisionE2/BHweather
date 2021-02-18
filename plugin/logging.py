@@ -3,7 +3,7 @@
 
 from __future__ import print_function
 import os
-log_file='/tmp/bhweather.log'  
+log_file = '/tmp/bhweather.log'  
 
 def printE(msg=''):
     import traceback
@@ -29,14 +29,14 @@ def getcaller_name():
         return ''
 
 def printD(label='', Ddata=''):
-        Ddata=str(Ddata)
-        label=str(label)
+        Ddata = str(Ddata)
+        label = str(label)
         import traceback
         try:
             caller_name = getcaller_name() 
             f = open(log_file, 'a')
             
-            f.write(caller_name+":"+label+'->'+Ddata + '\n')
+            f.write(caller_name + ":" + label + '->' + Ddata + '\n')
             f.close
         except Exception:
             print("======================EXC printD======================")
