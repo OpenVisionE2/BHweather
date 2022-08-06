@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 #Mod By RAED To All OE2.0 Dreambox images 16-04-2017 (Thx Black Hole Team and meo)
