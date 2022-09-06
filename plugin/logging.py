@@ -31,30 +31,30 @@ def getcaller_name():
 
 
 def printD(label='', Ddata=''):
-        Ddata = str(Ddata)
-        label = str(label)
-        import traceback
-        try:
-            caller_name = getcaller_name()
-            f = open(log_file, 'a')
+    Ddata = str(Ddata)
+    label = str(label)
+    import traceback
+    try:
+        caller_name = getcaller_name()
+        f = open(log_file, 'a')
 
-            f.write(caller_name + ":" + label + '->' + Ddata + '\n')
+        f.write(caller_name + ":" + label + '->' + Ddata + '\n')
+        f.close
+    except Exception:
+        print("======================EXC printD======================")
+        print("Log: %s" % traceback.format_exc())
+        print("========================================================")
+        try:
+            msg = '%s' % traceback.format_exc()
+            f = open(log_file, 'a')
+            f.write(Ddata + '\n')
             f.close
         except Exception:
             print("======================EXC printD======================")
-            print("Log: %s" % traceback.format_exc())
+            print("logII: %s" % traceback.format_exc())
             print("========================================================")
-            try:
-                msg = '%s' % traceback.format_exc()
-                f = open(log_file, 'a')
-                f.write(Ddata + '\n')
-                f.close
-            except Exception:
-                print("======================EXC printD======================")
-                print("logII: %s" % traceback.format_exc())
-                print("========================================================")
 
 
 def delLog():
     if os.path.exists(log_file):
-       os.remove(log_file)
+        os.remove(log_file)

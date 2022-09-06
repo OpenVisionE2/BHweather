@@ -46,16 +46,16 @@ def removeunicode(data):
 
 
 def getcity():
-      try:
-            for line in open('/etc/bhwheater2.cfg').readlines():
-                line = line.strip()
-                logdata("line", line)
-                if line.startswith("city"):
-                        city = line.split("=")[1]
-                        return city
-      except:
-            pass
-      return None
+    try:
+        for line in open('/etc/bhwheater2.cfg').readlines():
+            line = line.strip()
+            logdata("line", line)
+            if line.startswith("city"):
+                city = line.split("=")[1]
+                return city
+    except:
+        pass
+    return None
 
 
 class BhMeteoMain(Screen):
@@ -330,10 +330,10 @@ class BhMeteoMain(Screen):
 
     def goSelect(self, city):
         try:
-                if city is not None:
-                        self.session.openWithCallback(self.updateInfo, BhMeteoSelectCity, city)
+            if city is not None:
+                self.session.openWithCallback(self.updateInfo, BhMeteoSelectCity, city)
         except:
-                printE()
+            printE()
 
 
 class BhMeteoSelectCity(Screen):
@@ -383,9 +383,9 @@ class BhMeteoSelectCity(Screen):
                 searchresult = childs.attrib.get('weatherlocationname').encode('utf-8', 'ignore')
                 woeid = childs.attrib.get('weatherlocationcode').encode('utf-8', 'ignore')
                 if PY3:
-                        res = (searchresult.decode("utf-8"), woeid)
+                    res = (searchresult.decode("utf-8"), woeid)
                 else:
-                        res = (searchresult, woeid)
+                    res = (searchresult, woeid)
                 self.flist.append(res)
 
         if len(self.flist) > 0:
